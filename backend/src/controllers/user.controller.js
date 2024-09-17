@@ -25,12 +25,13 @@ const generateAccessRefreshToken = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { fullname, email, username, password } = req.body;
+  console.log(fullname);
   if (
     [fullname, email, username, password].some((field) => field?.trim() === "")
   ) {
     throw new ApiError(400, "All fields are required");
   }
-
+  // console.log("After creation error 34");
   const existedUser = await User.findOne({
     // $or:[]
     $or: [{ username }, { email }],
@@ -40,17 +41,18 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "Someone with this username/email already exists");
   }
 
-
+  // console.log("After creation error 44");
   const user = await User.create({
     fullname,
     email,
     password,
     username: username.toLowerCase(),
   });
-
+  // console.log("After creation error 51");
   const createduser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
+  // console.log("After creation error 55");
   if (!createduser) {
     throw new ApiError(500, "Something went wrong while registering the user");
   }
@@ -58,7 +60,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // return res.status(201).json({createduser}) This is also correct but not structured
   return res
     .status(201)
-    .json(new ApiResponse(200, createduser, "User registered successfully"));
+    .json(new ApiResponse(201, createduser, "User registered successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -205,7 +207,6 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
 });
-
 
 const getgifHistory = asyncHandler(async(req,res) => {
   // console.log(typeof(req.user._id));

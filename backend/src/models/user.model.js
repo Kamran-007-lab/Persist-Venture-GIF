@@ -28,7 +28,7 @@ const userSchema = new Schema(
     gifHistory: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Gif",
+        ref: "GIF",
       },
     ],
     password: {
