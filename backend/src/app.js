@@ -22,10 +22,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //routes import
 import userRouter from "./routes/user.routes.js"
+import gifRouter from "./routes/gif.routes.js"
 
 
 //routes declaraton
 app.use("/api/v1/users",userRouter)
+app.use("/api/v1/gifs",gifRouter)
 
 
 

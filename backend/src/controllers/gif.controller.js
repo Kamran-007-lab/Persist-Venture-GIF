@@ -9,6 +9,9 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
+ffmpeg.setFfmpegPath('C:/ffmpeg/ffmpeg-2024-09-16-git-76ff97cef5-full_build/bin/ffmpeg.exe');
+
+
 const getMygifs = asyncHandler(async (req,res) => {
 const {userId}=req.params;
 if(!userId){
@@ -58,9 +61,10 @@ return res.status(200).json(new ApiResponse(201,gifAggregate,"User's uploaded gi
 });
 
 const convertTogif = asyncHandler(async (req, res) => {
-    const { startTime, endTime } = req.body;
+    const { startTime, endTime, title } = req.body;
+    console.log(req.file);
     const videoPath = req.file.path;
-    const gifPath = `public/temp/${Date.now()}-output.gif`;
+    const gifPath = `public/temp/output.gif`;
   
     // Wrap ffmpeg processing in a promise
     const processVideoToGif = () => {
@@ -78,13 +82,18 @@ const convertTogif = asyncHandler(async (req, res) => {
     try {
       // Wait for the GIF to be processed
       const processedGifPath = await processVideoToGif();
-  
-      // Upload the GIF to Cloudinary
-      const gifFile = await uploadOnCloudinary(processedGifPath);
-  
-      // Create a GIF entry in the database
+      console.log(processedGifPath);
+
+      let gifFile;
+      try {
+        gifFile = await uploadOnCloudinary(processedGifPath);
+        // console.log("Uploaded GIF File:", gifFile); // Debug the response from Cloudinary
+      } catch (uploadError) {
+        // console.error("Error uploading to Cloudinary:", uploadError);
+        throw new ApiError(500, "Failed to upload GIF to Cloudinary");
+      }
       const gif = await GIF.create({
-        title: req.body.title,
+        title: title,
         gifFile: gifFile.url,
         duration: gifFile.duration,
         owner: req.user?._id,
