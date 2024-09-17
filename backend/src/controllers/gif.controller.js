@@ -1,4 +1,7 @@
 import mongoose, { isValidObjectId } from "mongoose";
+import ffmpeg from 'fluent-ffmpeg';
+import path from 'path';
+import fs from 'fs';
 import { GIF } from "../models/gif.model.js";
 import { User } from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
@@ -52,8 +55,57 @@ if(!gifAggregate){
 return res.status(200).json(new ApiResponse(201,gifAggregate,"User's uploaded gifs fetched successfully"))
 
 
-})
+});
 
+const convertTogif = asyncHandler(async (req, res) => {
+    const { startTime, endTime } = req.body;
+    const videoPath = req.file.path;
+    const gifPath = `public/temp/${Date.now()}-output.gif`;
+  
+    // Wrap ffmpeg processing in a promise
+    const processVideoToGif = () => {
+      return new Promise((resolve, reject) => {
+        ffmpeg(videoPath)
+          .setStartTime(startTime) // Set start time for GIF
+          .setDuration(endTime - startTime) // Set duration for GIF
+          .output(gifPath)
+          .on('end', () => resolve(gifPath)) // Resolve with gif path on success
+          .on('error', (err) => reject(new ApiError(400,err.message || "Failed to process the video")))
+          .run();
+      });
+    };
+  
+    try {
+      // Wait for the GIF to be processed
+      const processedGifPath = await processVideoToGif();
+  
+      // Upload the GIF to Cloudinary
+      const gifFile = await uploadOnCloudinary(processedGifPath);
+  
+      // Create a GIF entry in the database
+      const gif = await GIF.create({
+        title: req.body.title,
+        gifFile: gifFile.url,
+        duration: gifFile.duration,
+        owner: req.user?._id,
+      });
+  
+      if (!gif) {
+        throw new ApiError(500, "Something went wrong while creating the GIF entry");
+      }
+  
+      // Send the response back to the client
+
+      return res
+      .status(200)
+      .json(new ApiResponse(200, gifFile, "GIF created successfully"));
+  
+    } catch (error) {
+      // Handle errors
+      throw new ApiError(500, error.message);
+    }
+  });
+  
 
 const getgifById = asyncHandler(async (req, res) => {
   const { gifId } = req.params;
@@ -65,32 +117,6 @@ const getgifById = asyncHandler(async (req, res) => {
   if (!gif) {
     throw new ApiError(400, "Failed to fetch the video");
   }
-
-  const watchHistory = req.user?.gifHistory;
-
-  if (!watchHistory.includes(gifId)) {
-    const newwatchHistory = [...watchHistory, gifId];
-    await User.findByIdAndUpdate(
-      req.user?._id,
-      {
-        $set: {
-          gifHistory: newwatchHistory,
-        },
-      },
-      { new: true }
-    );
-
-    console.log(newwatchHistory);
-
-    await GIF.findByIdAndUpdate(
-      gifId,
-      {
-        $inc: { views: 1 },
-      },
-      { new: true }
-    );
-  }
-
   const fetchedgif = await GIF.aggregate([
     {
       $match: {
@@ -174,5 +200,6 @@ const deletegif = asyncHandler(async (req, res) => {
 export {
   getgifById,
   deletegif,
+  convertTogif,
   getMygifs
 };
