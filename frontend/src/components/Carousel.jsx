@@ -32,6 +32,34 @@ const reviews = [
     review: "Excellent interface and very user-friendly. Highly recommend!",
     rating: 4,
   },
+  {
+    id: 5,
+    name: "Emilia Clarke",
+    image: "https://randomuser.me/api/portraits/women/5.jpg",
+    review: "I love this GIF tool! Super fast and efficient.",
+    rating: 4.5,
+  },
+  {
+    id: 6,
+    name: "Sonam Chauhan",
+    image: "https://randomuser.me/api/portraits/women/6.jpg",
+    review: "The new pexel in the market !",
+    rating: 4,
+  },
+  {
+    id: 7,
+    name: "Javed Hassan",
+    image: "https://randomuser.me/api/portraits/men/7.jpg",
+    review: "Exquisite Just exquisite !",
+    rating: 5,
+  },
+  {
+    id: 8,
+    name: "Zoya Khan",
+    image: "https://randomuser.me/api/portraits/women/7.jpg",
+    review: "Excellent interface and very user-friendly. Highly recommend!",
+    rating: 5,
+  },
 ];
 
 const ReviewCarousel = () => {
@@ -60,8 +88,8 @@ const ReviewCarousel = () => {
   };
 
   return (
-    <div className="mt-16">
-      <h1 className="text-5xl md:text-7xl font-typewrite items-center text-center mb-5">
+    <div className=" bg-gray-100">
+      <h1 className="text-5xl md:text-7xl font-typewrite items-center text-center mb-5 pt-16">
         Discover a World of Endless Entertainment !!
       </h1>
       <h2 className="text-3xl font-bold text-black">

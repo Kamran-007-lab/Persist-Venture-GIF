@@ -2,8 +2,8 @@ import React from 'react';
 
 const Navbar = () => {
   return (
-    <nav className="bg-white shadow-lg w-full">
-      <div className="max-w-7xl mx-auto px-4">
+    <nav className="bg-gradient-to-br from-gray-500 via-white to-gray-100  shadow-2xl shadow-black w-full z-10">
+      <div className=" max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Left Side - Company Name */}
           <div className="flex-shrink-0">
