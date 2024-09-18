@@ -1,14 +1,15 @@
-// GifCard.jsx
-import React from 'react';
-
+import React from "react";
+import { useState } from "react";
+import { AiFillDelete, AiOutlineDownload } from "react-icons/ai";
 const GifCard = ({ gif, handleDelete }) => {
-    // console.log("This is the GIF",gif);
-  // Function to trigger GIF download
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = gif.gifFile;
-    link.download = `${gif?.title}.gif`;
-    link.click();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -18,25 +19,33 @@ const GifCard = ({ gif, handleDelete }) => {
         alt={gif?.title}
         className="w-full h-48 object-cover rounded-md mb-4"
       />
-      <h3 className="text-lg font-bold">{gif?.title}</h3>
-      <div className="absolute inset-0 bg-gray-900 bg-opacity-0 group-hover:bg-opacity-60 flex justify-center items-center transition-all duration-300">
-        <div className="space-x-4 opacity-0 group-hover:opacity-100">
-          {/* Delete Button */}
-          <button
-            onClick={() => handleDelete(gif?._id)}
-            className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
-          >
-            Delete
+      <div className="flex justify-between">
+        <h3 className="text-lg font-bold">{gif?.title}</h3>
+        <div>
+          <button onClick={handleModalOpen}>
+            <AiOutlineDownload className="text-2xl" />
           </button>
-          {/* Download Button */}
-          <button
-            onClick={handleDownload}
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            Download
+          <button onClick={() => handleDelete(gif?._id)}>
+            <AiFillDelete className="text-2xl" />
           </button>
         </div>
+        {/* <button>DELETE</button> */}
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
+            <button
+              className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700"
+              onClick={handleModalClose}
+            >
+              <h1 className="text-white text-3xl">✕</h1>
+            </button>
+            <img src={gif?.gifFile} alt={gif?.title} className="max-w-full h-auto" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
