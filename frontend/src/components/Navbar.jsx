@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Left Side - Company Name */}
           <div className="flex-shrink-0">
-            <h1 className="text-5xl  text-gray-800 font-signature">Persist  Ventures</h1>
+            <h1 className="text-5xl  text-gray-800 font-signature mt-2">Persist  Ventures</h1>
           </div>
 
           {/* Right Side - Navigation Links */}
