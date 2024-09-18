@@ -5,7 +5,7 @@ const VideoUploadSection = ({ setGifData }) => {
     title: "",
     startTime: "",
     endTime: "",
-    video: null,
+    videoFile: null,
   });
 
   const handleInputChange = (e) => {
@@ -14,62 +14,41 @@ const VideoUploadSection = ({ setGifData }) => {
   };
 
   const handleVideoChange = (e) => {
-    setFormData({ ...formData, video: e.target.files[0] });
+    setFormData({ ...formData, videoFile: e.target.files[0] });
   };
-
-  // const handleSubmit = async (e) => {
-  //     e.preventDefault();
-
-  //     // Create FormData object using the form data after the form has been submitted
-  //     const form = document.getElementById("form");
-  //     const data = new FormData(form);
-  //     const response = await fetch("http://localhost:8000/api/v1/users/register", {
-  //       method: "POST",
-  //       // headers: {
-  //       //   "Content-Type": "multipart/form-data",
-  //       // },
-  //       body: data,
-  //       credentials: 'include',
-  //     });
-
-  //     const json = await response.json();
-  //     if (json.success) {
-  //       //Redirect to My Profile page
-
-  //       navigate("/Login");
-  //     } else {
-  //       errormessage(json.error);
-  //       // console.log(json.error);
-  //     }
-  //   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = document.getElementById("form");
-    const data = new FormData(form);
-    const response = await fetch("http://localhost:8000/api/v1/gifs/", {
-      method: "POST",
-      // headers: {
-      //   "Content-Type": "multipart/form-data",
-      // },
-      body: data,
-      credentials: "include",
-    });
-
-    const json = await response.json();
-    if (json.success) {
-      setGifData({
-        title: formData.title,
-        gifUrl: json.data.url,
+  
+    // Create a FormData object to send multipart/form-data
+    const formDataObj = new FormData();
+    formDataObj.append("title", formData.title);
+    formDataObj.append("startTime", formData.startTime);
+    formDataObj.append("endTime", formData.endTime);
+    formDataObj.append("videoFile", formData.videoFile);
+  
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/gifs/", {
+        method: "POST",
+        body: formDataObj, // Send the FormData object
+        credentials: "include", // Include credentials if needed
       });
-      //Redirect to My Profile page
-
-      //   navigate("/Login");
-    } else {
-      errormessage(json.error);
-      // console.log(json.error);
+  
+      const json = await response.json();
+      if (json.success) {
+        console.log(json);
+        setGifData({
+          title: formData.title,
+          gifUrl: json.data.url,
+        });
+      } else {
+        console.log(json.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
+  
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-2xl shadow-black mb-8">
@@ -111,6 +90,7 @@ const VideoUploadSection = ({ setGifData }) => {
         <div className="mb-4">
           <label className="block text-gray-700">Upload Video</label>
           <input
+            name="videoFile"
             type="file"
             accept="video/*"
             onChange={handleVideoChange}

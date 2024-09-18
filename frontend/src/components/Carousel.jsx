@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight, FaStar, FaRegStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { TypeAnimation } from "react-type-animation";
@@ -22,7 +23,8 @@ const reviews = [
     id: 3,
     name: "Michael Lee",
     image: "https://randomuser.me/api/portraits/men/3.jpg",
-    review: "The best tool out there for creating high-quality GIFs from videos.",
+    review:
+      "The best tool out there for creating high-quality GIFs from videos.",
     rating: 5,
   },
   {
@@ -93,19 +95,14 @@ const ReviewCarousel = () => {
         Discover a World of Endless Entertainment !!
       </h1>
       <h2 className="text-3xl font-bold text-black">
-            <TypeAnimation
-              sequence={[
-                "Why watch a video when you can GIF it?",
-                2000,
-                "",
-                2000,
-              ]}
-              speed={50}
-              className=" text-3xl font-light items-center text-center font-typewrite"
-              wrapper="h2"
-              repeat={Infinity}
-            />
-          </h2>
+        <TypeAnimation
+          sequence={["Why watch a video when you can GIF it?", 2000, "", 2000]}
+          speed={50}
+          className=" text-3xl font-light items-center text-center font-typewrite"
+          wrapper="h2"
+          repeat={Infinity}
+        />
+      </h2>
 
       {/* <h2 className="text-3xl font-light items-center text-center font-typewrite">
         Why watch a video when you can GIF it?
@@ -120,7 +117,7 @@ const ReviewCarousel = () => {
           className={`flex transition-transform duration-500 ease-in-out`}
           style={{
             // Adjusted to translate the carousel so the active review stays centered
-            transform: `translateX(-${(current * (100 / 3)) - 100 / 3}%)`,
+            transform: `translateX(-${current * (100 / 3) - 100 / 3}%)`,
           }}
         >
           {reviews.map((review, index) => (
@@ -156,7 +153,8 @@ const ReviewCarousel = () => {
         </div>
 
         {/* Prev Arrow */}
-        <div style={{top:"42%"}}
+        <div
+          style={{ top: "42%" }}
           className="absolute left-1 transform -translate-y-1/2 cursor-pointer text-gray-600 hover:text-blue-600"
           onClick={handlePrev}
         >
@@ -164,26 +162,30 @@ const ReviewCarousel = () => {
         </div>
 
         {/* Next Arrow */}
-        <div style={{top:"42%"}}
+        <div
+          style={{ top: "42%" }}
           className="absolute right-1 transform -translate-y-1/2 cursor-pointer text-gray-600 hover:text-blue-600"
           onClick={handleNext}
         >
           <IoIosArrowForward size={40} />
         </div>
         <div className="flex justify-center gap-20 px-4 mt-10">
-          <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-white to-black group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-            <span className="text-lg relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-              Get started !! sign up now
-            </span>
-          </button>
-          <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-white to-black group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-            <span className="text-lg relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-              Existing user ?? Login
-            </span>
-          </button>
+          <Link to="/CreateProfile">
+            <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-white to-black group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+              <span className="text-lg relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                Get started !! sign up now
+              </span>
+            </button>
+          </Link>
+          <Link to="/Login">
+            <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-white to-black group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+              <span className="text-lg relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                Existing user ?? Login
+              </span>
+            </button>
+          </Link>
         </div>
       </div>
-       
     </div>
   );
 };

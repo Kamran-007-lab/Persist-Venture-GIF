@@ -1,6 +1,7 @@
 // HomePage.jsx
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
+import { Link } from 'react-router-dom';
+import LoggedNavbar from '../components/LoggedNavbar';
 import VideoUploadSection from '../components/VideoUploadSection';
 import GifDisplaySection from '../components/GifDisplaySection';
 
@@ -9,7 +10,7 @@ const HomePage = () => {
 
   return (
   <>
-    <Navbar/>
+    <LoggedNavbar/>
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl text-center mb-8 font-typewrite">Video to GIF Generator</h1>

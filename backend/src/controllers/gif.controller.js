@@ -63,6 +63,7 @@ return res.status(200).json(new ApiResponse(201,gifAggregate,"User's uploaded gi
 const convertTogif = asyncHandler(async (req, res) => {
     const { startTime, endTime, title } = req.body;
     console.log(req.file);
+    console.log(req.body);
     const videoPath = req.file.path;
     const gifPath = `public/temp/output.gif`;
   
@@ -107,7 +108,7 @@ const convertTogif = asyncHandler(async (req, res) => {
 
       return res
       .status(200)
-      .json(new ApiResponse(200, gif, "GIF created successfully"));
+      .json(new ApiResponse(200, gifFile, "GIF created successfully"));
   
     } catch (error) {
       // Handle errors
