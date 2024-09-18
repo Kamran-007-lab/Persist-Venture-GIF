@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 
-const LoggedNavbar = () => {
+const LoggedNavbar = ({userId}) => {
+    // console.log(userId);
     let navigate = useNavigate();
 //   function errormessage(message) {
 //     let dropdown = document.getElementById("errormessage");
@@ -52,25 +53,25 @@ const LoggedNavbar = () => {
           {/* Right Side - Navigation Links */}
           <div className="hidden md:flex space-x-4">
             <Link
-              href="/"
+              to={`/MyGifs/${userId}`}
               className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-lg font-medium"
             >
               My GIFs
             </Link>
             <Link
-              href="/"
+              
               className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-lg font-medium"
             >
               Change Password
             </Link>
             <Link
-              href="/"
+              
               className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-lg font-medium"
             >
               Premium
             </Link>
             <Link
-              href="/"
+              
               className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-lg font-medium"
               onClick={handleLogout}
             >
